@@ -2,9 +2,12 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-      return queryInterface.addColumn('recipes', 'type_id', 
+      return queryInterface.addColumn(
+        'recipes',
+        'type_id', 
       { 
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: { model: 'types', key: 'id' },
         onUpdate: 'CASCADE',
       });
