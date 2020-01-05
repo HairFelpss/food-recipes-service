@@ -2,61 +2,61 @@ import Type from '../models/Type'
 import Recipe from '../models/Recipe'
 
 class TypeController {
-    async store (req, res){
-        
+    async store(req, res) {
+
         try {
             const { recipes, ...data } = req.body
             const typeExistis = await Type.findOne({ where: { name: req.body.name } })
 
-            if(typeExistis){
-                return res.status(400).json({ error: 'Type already exists'})
+            if (typeExistis) {
+                return res.status(400).json({ error: 'Type already exists' })
             }
+            console.log(req.body)
+            const type = await Type.create(data)
 
-            const type = await Type.create(req.body)
-
-            if(recipes && recipes.length > 0){
+            if (recipes && recipes.length > 0) {
                 type.setRecipes(recipes)
             }
 
             return res.json(type)
-        
-        }catch (err) {
+
+        } catch (err) {
             console.log('err => ', err)
         }
     }
 
     async index(req, res) {
-      
+
         try {
-              const types = await Type.findAll({
+            const types = await Type.findAll({
                 include: [
                     {
                         model: Recipe,
-                        as: 'Recipes',
-                        through: { attributes : [] },
+                        as: 'recipes',
+                        through: { attributes: [] },
                     }
                 ]
             })
 
             return res.json(types)
-       
-        }catch(err){
+
+        } catch (err) {
             console.log('err => ', err)
         }
     }
 
     async update(req, res) {
-        try{
+        try {
 
             const { id } = req.params
             const type = await Type.findByPk(id)
-            
-            if(req.body.name !== type.name){
+
+            if (req.body.name !== type.name) {
 
                 const typeExistis = await Type.findOne({ where: { name: req.body.name } })
 
-                if(typeExistis){
-                    return res.status(400).json({ error: 'Type already exists'})
+                if (typeExistis) {
+                    return res.status(400).json({ error: 'Type already exists' })
                 }
             }
 
@@ -64,13 +64,13 @@ class TypeController {
 
             res.json(updateType)
 
-        }catch(err){
+        } catch (err) {
             console.log('err => ', err)
         }
     }
 
     async delete(req, res) {
-        try{
+        try {
             const { id } = req.params
             const type = await Type.findByPk(id)
 
@@ -78,7 +78,7 @@ class TypeController {
 
             res.json(deleteType)
 
-        }catch(err){
+        } catch (err) {
             console.log('err => ', err)
         }
     }

@@ -13,10 +13,11 @@ class RecipeController {
             }
 
             const recipe = await Recipe.create(data)
+
             if(types && types.length > 0){
-                recipe.setTypes(types)
+                await recipe.setTypes(types)
             }
-            
+
             return res.json(recipe)
         
         }catch (err) {
@@ -30,7 +31,7 @@ class RecipeController {
                 include: [
                     {
                         model: Type,
-                        as: 'Types',
+                        as: 'types',
                         through: { attributes : [] },
                     }
                 ]
@@ -47,7 +48,7 @@ class RecipeController {
 
             const { id } = req.params
             const recipe = await Recipe.findByPk(id)
-            
+            console.log('inside update => ', recipe)
             if(req.body.name !== recipe.name){
 
                 const recipeExistis = await Recipe.findOne({ where: { name: req.body.name } })

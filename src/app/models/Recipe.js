@@ -23,7 +23,7 @@ class Recipe extends Model {
         this.belongsTo(models.File, { foreignKey: 'photo_id' })
         this.belongsToMany(models.Type, { 
             through: 'tags',  
-            as: "Types",
+            as: "types",
             foreignKey: 'recipe_id',
         })
     }
