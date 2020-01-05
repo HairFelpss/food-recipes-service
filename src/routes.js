@@ -12,10 +12,17 @@ const upload = multer(multerConfig)
 
 routes.post('/recipes', RecipeController.store)
 routes.get('/recipes', RecipeController.index)
+routes.put('/recipes/:id', RecipeController.update)
+routes.delete('/recipes/:id', RecipeController.delete)
 
 routes.post('/types', TypeController.store)
 routes.get('/types', TypeController.index)
+routes.put('/types/:id', TypeController.update)
+routes.delete('/types/:id', TypeController.delete)
 
 routes.post('/files', upload.single('file'), FileController.store)
+routes.get('/files', FileController.index)
+routes.put('/files/:id', upload.single('file'), FileController.update)
+routes.delete('/files/:id', FileController.delete)
 
 export default routes

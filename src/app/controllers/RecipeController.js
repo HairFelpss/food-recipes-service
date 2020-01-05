@@ -3,8 +3,8 @@ import Type from '../models/Type'
 
 class RecipeController {
     async store (req, res){
-        
         try {
+
             const { types, ...data } = req.body
             const recipeExistis = await Recipe.findOne({ where: { name: req.body.name } })
 
@@ -37,6 +37,44 @@ class RecipeController {
             })
             return res.json(recipes)
        
+        }catch(err){
+            console.log('err => ', err)
+        }
+    }
+
+    async update(req, res) {
+        try{
+
+            const { id } = req.params
+            const recipe = await Recipe.findByPk(id)
+            
+            if(req.body.name !== recipe.name){
+
+                const recipeExistis = await Recipe.findOne({ where: { name: req.body.name } })
+
+                if(recipeExistis){
+                    return res.status(400).json({ error: 'Recipe already exists'})
+                }
+            }
+
+            const updateRecipe = await recipe.update(req.body)
+
+            res.json(updateRecipe)
+
+        }catch(err){
+            console.log('err => ', err)
+        }
+    }
+
+    async delete(req, res) {
+        try{
+            const { id } = req.params
+            const recipe = await Recipe.findByPk(id)
+
+            const deleteRecipe = await recipe.destroy(req.body)
+
+            res.json(deleteRecipe)
+
         }catch(err){
             console.log('err => ', err)
         }
