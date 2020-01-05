@@ -12,6 +12,7 @@ module.exports = {
       recipe_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        unique: true,
         references: { model: 'recipes', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
@@ -19,6 +20,7 @@ module.exports = {
       type_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
+        unique: true,
         references: { model: 'types', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
