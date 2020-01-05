@@ -4,7 +4,7 @@ module.exports = {
     port: 5432,
     username: 'postgres',
     password: 'docker',
-    database: 'wonderfulrecipes',
+    database: 'recipes',
     define: {
         timestamps: true,
         underscored: true,

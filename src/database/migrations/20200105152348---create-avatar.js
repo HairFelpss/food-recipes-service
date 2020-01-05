@@ -2,26 +2,22 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('tags', { 
+    return queryInterface.createTable('avatars', { 
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
       }, 
-      recipe_id: {
-        type: Sequelize.INTEGER,
+      name: {
+        type: Sequelize.STRING,
         allowNull: false,
-        references: { model: 'recipes', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        unique: false,
       },
-      type_id: {
-        type: Sequelize.INTEGER,
+      path: {
+        type: Sequelize.STRING,
         allowNull: false,
-        references: { model: 'types', key: 'id' },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        unique: true,
       },
       created_at:{
         type: Sequelize.DATE,
@@ -35,6 +31,6 @@ module.exports = {
   },
 
   down: (queryInterface) => {
-    return queryInterface.dropTable('tags');
+    return queryInterface.dropTable('avatars');
   },
 };

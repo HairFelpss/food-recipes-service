@@ -1,10 +1,11 @@
 import Sequelize, { Model } from 'sequelize'
 
-class Type extends Model {
+class Avatar extends Model {
     static init(sequelize) {
         super.init(
             {
                 name: Sequelize.STRING,
+                path: Sequelize.STRING,
             },
             {
                 sequelize,
@@ -13,13 +14,6 @@ class Type extends Model {
 
         return this
     }
-    static associate(models) {
-        this.belongsToMany(models.Recipe, { 
-            through: 'tags',
-            as: "recipes",
-            foreignKey: 'type_id',
-        })
-    }
 }
 
-export default Type
+export default Avatar
