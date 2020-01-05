@@ -13,6 +13,13 @@ class Type extends Model {
 
         return this
     }
+    static associate(models) {
+        this.belongsToMany(models.Recipe, { 
+            through: 'tags',
+            as: "Recipes",
+            foreignKey: 'type_id', 
+        })
+    }
 }
 
 export default Type
