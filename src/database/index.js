@@ -1,10 +1,12 @@
 import Sequelize from 'sequelize'
 
 import File from '../app/models/File'
+import Recipe from '../app/models/Recipe'
+import Type from '../app/models/Type'
 
 import databaseConfig from '../config/database'
 
-const models = [File]
+const models = [File, Recipe, Type]
 
 class Database {
     constructor() {
