@@ -16,8 +16,8 @@ class Type extends Model {
     static associate(models) {
         this.belongsToMany(models.Recipe, { 
             through: 'tags',
-            as: "Recipes",
-            foreignKey: 'type_id', 
+            as: "recipes",
+            foreignKey: 'type_id',
         })
     }
 }

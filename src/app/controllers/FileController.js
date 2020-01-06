@@ -2,9 +2,10 @@ import File from '../models/File'
 
 class FileController {
     async store (req, res){
-        const { originalname: name, filename: path } = req.file
 
         try {
+            const { originalname: name, filename: path } = req.file
+
             const file = await File.create({
                 name,
                 path,
@@ -28,7 +29,7 @@ class FileController {
 
     async update (req, res){
         try{
-            const { id } = req.params
+           const id = req.userId
             const file = await File.findByPk(id)
 
             const { originalname: name, filename: path } = req.file
@@ -56,7 +57,7 @@ class FileController {
 
     async delete (req, res){
         try{
-            const { id } = req.params
+           const id = req.userId
             const file = await File.findByPk(id)
 
             const deleteFile = await file.destroy(req.body)

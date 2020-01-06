@@ -20,10 +20,10 @@ class Recipe extends Model {
         return this
     }
     static associate(models) {
-        this.belongsTo(models.File, { foreignKey: 'photo_id' })
+        this.belongsTo(models.File, { foreignKey: 'photo_id', as: 'pictures' })
         this.belongsToMany(models.Type, { 
             through: 'tags',  
-            as: "Types",
+            as: "types",
             foreignKey: 'recipe_id',
         })
     }
