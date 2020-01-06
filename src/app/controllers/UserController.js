@@ -12,7 +12,7 @@ class UserController {
             }
 
             const { name, email, password, role_id } = await User.create(req.body)
-
+            console.log('teste')
             return res.json({
                 name,
                 email,
