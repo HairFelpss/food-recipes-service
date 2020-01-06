@@ -11,7 +11,6 @@ class TypeController {
             if (typeExistis) {
                 return res.status(400).json({ error: 'Type already exists' })
             }
-            console.log(req.body)
             const type = await Type.create(data)
 
             if (recipes && recipes.length > 0) {
@@ -48,7 +47,7 @@ class TypeController {
     async update(req, res) {
         try {
 
-            const { id } = req.params
+           const id = req.userId
             const type = await Type.findByPk(id)
 
             if (req.body.name !== type.name) {
@@ -71,7 +70,7 @@ class TypeController {
 
     async delete(req, res) {
         try {
-            const { id } = req.params
+           const id = req.userId
             const type = await Type.findByPk(id)
 
             const deleteType = await type.destroy(req.body)

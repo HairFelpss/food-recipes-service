@@ -1,5 +1,6 @@
 import Recipe from '../models/Recipe'
 import Type from '../models/Type'
+import File from '../models/File'
 
 class RecipeController {
     async store (req, res){
@@ -33,6 +34,10 @@ class RecipeController {
                         model: Type,
                         as: 'types',
                         through: { attributes : [] },
+                    },
+                    {
+                        model: File,
+                        as: 'pictures'
                     }
                 ]
             })
@@ -46,7 +51,7 @@ class RecipeController {
     async update(req, res) {
         try{
 
-            const { id } = req.params
+           const id = req.userId
             const recipe = await Recipe.findByPk(id)
             console.log('inside update => ', recipe)
             if(req.body.name !== recipe.name){
@@ -69,7 +74,7 @@ class RecipeController {
 
     async delete(req, res) {
         try{
-            const { id } = req.params
+           const id = req.userId
             const recipe = await Recipe.findByPk(id)
 
             const deleteRecipe = await recipe.destroy(req.body)

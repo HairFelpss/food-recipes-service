@@ -8,30 +8,36 @@ import FileController from './app/controllers/FileController'
 import TypeController from './app/controllers/TypeController'
 import AvatarController from './app/controllers/AvatarController'
 import RoleController from './app/controllers/RoleController'
+import SessionController from './app/controllers/SessionController'
+
+import authMiddleware from './app/middlewares/auth'
 
 const routes = new Router()
 const upload = multer(multerConfig)
-// Routes goes here
 
-routes.post('/users/', UserController.store)
-routes.get('/users/', UserController.index)
-routes.put('/users/:id', UserController.update)
-routes.delete('/users/:id', UserController.delete)
+routes.post('/users', UserController.store)
+routes.post('/sessions', SessionController.store)
 
-routes.post('/roles/', RoleController.store)
-routes.get('/roles/', RoleController.index)
-routes.put('/roles/:id', RoleController.update)
-routes.delete('/roles/:id', RoleController.delete)
+routes.use(authMiddleware)
+
+routes.get('/users', UserController.index)
+routes.put('/users', UserController.update)
+routes.delete('/users', UserController.delete)
+
+routes.post('/roles', RoleController.store)
+routes.get('/roles', RoleController.index)
+routes.put('/roles', RoleController.update)
+routes.delete('/roles', RoleController.delete)
 
 routes.post('/recipes', RecipeController.store)
 routes.get('/recipes', RecipeController.index)
-routes.put('/recipes/:id', RecipeController.update)
-routes.delete('/recipes/:id', RecipeController.delete)
+routes.put('/recipes', RecipeController.update)
+routes.delete('/recipes', RecipeController.delete)
 
 routes.post('/types', TypeController.store)
 routes.get('/types', TypeController.index)
-routes.put('/types/:id', TypeController.update)
-routes.delete('/types/:id', TypeController.delete)
+routes.put('/types', TypeController.update)
+routes.delete('/types', TypeController.delete)
 
 routes.post('/files', upload.single('file'), FileController.store)
 routes.get('/files', FileController.index)
