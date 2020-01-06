@@ -2,26 +2,26 @@ import Role from '../models/Role'
 import User from '../models/User'
 
 class RoleController {
-    async store (req, res){
-        
-        try {           
+    async store(req, res) {
+
+        try {
             const roleExists = await Role.findOne({ where: { name: req.body.name } })
 
-            if(roleExists){
-                return res.status(400).json({ error: 'Role already exists'})
+            if (roleExists) {
+                return res.status(400).json({ error: 'Role already exists' })
             }
 
             const role = await Role.create(req.body)
 
             return res.json(role)
-        
-        }catch (err) {
+
+        } catch (err) {
             console.log('err => ', err)
         }
     }
 
     async index(req, res) {
-      
+
         try {
             const roles = await Role.findAll({
                 include: [
@@ -31,48 +31,47 @@ class RoleController {
                     }
                 ]
             })
-            
+
             return res.json(roles)
-       
-        }catch(err){
+
+        } catch (err) {
             console.log('err => ', err)
         }
     }
 
     async update(req, res) {
-        try{
+        try {
+            const id = req.userId
 
-            const { id } = req.params
-            const role = await Role.findByPk(id)
-            
-            if(req.body.name !== role.name){
+            if (req.body.name !== role.name) {
 
                 const typeExistis = await Role.findOne({ where: { name: req.body.name } })
 
-                if(typeExistis){
-                    return res.status(400).json({ error: 'Role already exists'})
+                if (typeExistis) {
+                    return res.status(400).json({ error: 'Role already exists' })
                 }
             }
 
+            const role = await Role.findByPk(id)
             const updateType = await role.update(req.body)
 
             res.json(updateType)
 
-        }catch(err){
+        } catch (err) {
             console.log('err => ', err)
         }
     }
 
     async delete(req, res) {
-        try{
-            const { id } = req.params
+        try {
+            const id = req.userId
             const role = await Role.findByPk(id)
 
             const deleteType = await role.destroy(req.body)
 
             res.json(deleteType)
 
-        }catch(err){
+        } catch (err) {
             console.log('err => ', err)
         }
     }
