@@ -13,10 +13,10 @@ class RoleController {
 
             const role = await Role.create(req.body)
 
-            return res.json(role)
+            return res.status(200).json(role)
 
-        } catch (err) {
-            console.log('err => ', err)
+        } catch {
+            res.status(400).json({ error: 'Bad Request' });
         }
     }
 
@@ -24,24 +24,24 @@ class RoleController {
 
         try {
             const roles = await Role.findAll({
-                include: [
-                    {
-                        model: User,
-                        as: 'users',
-                    }
-                ]
+                include: [{
+                    model: User,
+                    as: 'users',
+                }]
             })
 
-            return res.json(roles)
+            return res.status(200).json(roles)
 
-        } catch (err) {
-            console.log('err => ', err)
+        } catch {
+            res.status(400).json({ error: 'Bad Request' });
         }
     }
 
     async update(req, res) {
         try {
-            const id = req.userId
+
+            const { id } = req.params
+            const role = await Role.findByPk(id)
 
             if (req.body.name !== role.name) {
 
@@ -52,27 +52,26 @@ class RoleController {
                 }
             }
 
-            const role = await Role.findByPk(id)
             const updateType = await role.update(req.body)
 
-            res.json(updateType)
+            res.status(200).json(updateType)
 
-        } catch (err) {
-            console.log('err => ', err)
+        } catch {
+            res.status(400).json({ error: 'Bad Request' });
         }
     }
 
     async delete(req, res) {
         try {
-            const id = req.userId
+            const { id } = req.params
             const role = await Role.findByPk(id)
 
             const deleteType = await role.destroy(req.body)
 
-            res.json(deleteType)
+            res.status(200).json(deleteType)
 
-        } catch (err) {
-            console.log('err => ', err)
+        } catch {
+            res.status(400).json({ error: 'Bad Request' });
         }
     }
 }

@@ -11,16 +11,17 @@ class TypeController {
             if (typeExistis) {
                 return res.status(400).json({ error: 'Type already exists' })
             }
+            console.log(req.body)
             const type = await Type.create(data)
 
             if (recipes && recipes.length > 0) {
                 type.setRecipes(recipes)
             }
 
-            return res.json(type)
+            return res.status(200).json(type)
 
-        } catch (err) {
-            console.log('err => ', err)
+        } catch {
+            res.status(400).json({ error: 'Bad Request' });
         }
     }
 
@@ -28,26 +29,24 @@ class TypeController {
 
         try {
             const types = await Type.findAll({
-                include: [
-                    {
-                        model: Recipe,
-                        as: 'recipes',
-                        through: { attributes: [] },
-                    }
-                ]
+                include: [{
+                    model: Recipe,
+                    as: 'recipes',
+                    through: { attributes: [] },
+                }]
             })
 
-            return res.json(types)
+            return res.status(200).json(types)
 
-        } catch (err) {
-            console.log('err => ', err)
+        } catch {
+            res.status(400).json({ error: 'Bad Request' });
         }
     }
 
     async update(req, res) {
         try {
 
-           const id = req.userId
+            const { id } = req.params
             const type = await Type.findByPk(id)
 
             if (req.body.name !== type.name) {
@@ -61,24 +60,24 @@ class TypeController {
 
             const updateType = await type.update(req.body)
 
-            res.json(updateType)
+            res.status(200).json(updateType)
 
-        } catch (err) {
-            console.log('err => ', err)
+        } catch {
+            res.status(400).json({ error: 'Bad Request' });
         }
     }
 
     async delete(req, res) {
         try {
-           const id = req.userId
+            const { id } = req.params
             const type = await Type.findByPk(id)
 
             const deleteType = await type.destroy(req.body)
 
-            res.json(deleteType)
+            res.status(200).json(deleteType)
 
-        } catch (err) {
-            console.log('err => ', err)
+        } catch {
+            res.status(400).json({ error: 'Bad Request' });
         }
     }
 }

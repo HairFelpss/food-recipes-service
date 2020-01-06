@@ -1,7 +1,7 @@
 import File from '../models/File'
 
 class FileController {
-    async store (req, res){
+    async store(req, res) {
 
         try {
             const { originalname: name, filename: path } = req.file
@@ -11,35 +11,35 @@ class FileController {
                 path,
             })
 
-            res.json(file)
-        }catch (err) {
-            console.log('err => ', err)
+            res.status(200).json(file)
+        } catch {
+            res.status(400).json({ error: 'Bad Request' });
         }
     }
 
-    async index (req, res){
+    async index(req, res) {
         try {
             const files = await File.findAll()
             return res.json(files)
-       
-        }catch(err){
-            console.log('err => ', err)
+
+        } catch {
+            res.status(400).json({ error: 'Bad Request' });
         }
     }
 
-    async update (req, res){
-        try{
-           const id = req.userId
+    async update(req, res) {
+        try {
+            const { id } = req.params
             const file = await File.findByPk(id)
 
             const { originalname: name, filename: path } = req.file
 
-            if(path !== file.path){
+            if (path !== file.path) {
 
                 const fileExistis = await File.findOne({ where: { path } })
 
-                if(fileExistis){
-                    return res.status(400).json({ error: 'File already exists'})
+                if (fileExistis) {
+                    return res.status(400).json({ error: 'File already exists' })
                 }
             }
 
@@ -48,24 +48,24 @@ class FileController {
                 path,
             })
 
-            res.json(updateFile)
+            res.status(200).json(updateFile)
 
-        }catch(err){
-            console.log('err => ', err)
+        } catch {
+            res.status(400).json({ error: 'Bad Request' });
         }
     }
 
-    async delete (req, res){
-        try{
-           const id = req.userId
+    async delete(req, res) {
+        try {
+            const { id } = req.params
             const file = await File.findByPk(id)
 
             const deleteFile = await file.destroy(req.body)
 
-            res.json(deleteFile)
+            res.status(200).json(deleteFile)
 
-        }catch(err){
-            console.log('err => ', err)
+        } catch {
+            res.status(400).json({ error: 'Bad Request' });
         }
     }
 }
