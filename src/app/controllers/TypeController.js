@@ -27,17 +27,33 @@ class TypeController {
     async index(req, res) {
 
         try {
+
             const types = await Type.findAll({
                 include: [
                     {
                         model: Recipe,
                         as: 'recipes',
-                        through: { attributes: [] },
+                        through: {
+                            attributes: [
+                                'id',
+                                'name',
+                                'introduction',
+                                'steps',
+                                'ingredients',
+                                'preparation_time',
+                                'qt_yield',
+                                'difficulty',
+                                'types',
+                                'pictures',
+                                'tags',
+                            ]
+                        },
                     }
                 ]
             })
 
-            return res.json(types)
+            const { id, name, recipes } = types[0]
+            return res.json({ id, name, recipes })
 
         } catch (err) {
             console.log('err => ', err)
@@ -47,7 +63,7 @@ class TypeController {
     async update(req, res) {
         try {
 
-           const id = req.userId
+            const id = req.userId
             const type = await Type.findByPk(id)
 
             if (req.body.name !== type.name) {
@@ -70,7 +86,7 @@ class TypeController {
 
     async delete(req, res) {
         try {
-           const id = req.userId
+            const id = req.params.id
             const type = await Type.findByPk(id)
 
             const deleteType = await type.destroy(req.body)

@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import express from 'express'
 import path from 'path'
+import cors from 'cors'
 import routes from './routes'
 
 import * as Sentry from '@sentry/node'
@@ -16,13 +17,14 @@ class AppController {
 
     Sentry.init(sentryConfig)
 
-    this.server.use(Sentry.Handlers.requestHandler());
 
     this.middlewares() 
     this.routes()
   }
 
   middlewares() {
+    this.server.use(Sentry.Handlers.requestHandler());
+    this.server.use(cors())
     this.server.use(express.json())
     this.server.use(
       '/files',

@@ -12,7 +12,6 @@ class RoleController {
             }
 
             const role = await Role.create(req.body)
-
             return res.json(role)
 
         } catch (err) {
@@ -28,11 +27,14 @@ class RoleController {
                     {
                         model: User,
                         as: 'users',
+                        attributes: ['id', 'name', 'email']
                     }
                 ]
             })
 
-            return res.json(roles)
+            const { id, name, users } = roles[0]
+            const filteredRoles = { id, name, users }
+            return res.json(filteredRoles)
 
         } catch (err) {
             console.log('err => ', err)
