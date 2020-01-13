@@ -1,6 +1,6 @@
 import * as Yup from 'yup'
 import User from '../models/User'
-import Avatar from '../models/Avatar'
+import File from '../models/File'
 
 class UserController {
   async store(req, res) {
@@ -13,8 +13,8 @@ class UserController {
         role_id: Yup.number()
       })
 
-      if(!(await schema.isValid(req.body))){
-        return res.status(400).json({ error: 'Validation fails'})
+      if (!(await schema.isValid(req.body))) {
+        return res.status(400).json({ error: 'Validation fails' })
       }
 
       const userExists = await User.findOne({ where: { email: req.body.email } })
@@ -42,7 +42,7 @@ class UserController {
       const user = await User.findAll({
         attributes: ['id', 'name', 'email', 'avatar_id'],
         include: {
-          model: Avatar,
+          model: File,
           as: 'avatar',
           attributes: ['name', 'path', 'url']
         }
@@ -60,7 +60,7 @@ class UserController {
         name: Yup.string(),
         email: Yup.string().email(),
         oldPassword: Yup.string().min(10),
-        password: Yup.string().min(10).when('oldPassword', (oldPassword, field) => 
+        password: Yup.string().min(10).when('oldPassword', (oldPassword, field) =>
           oldPassword ? field.required() : field
         ),
         confirmPassword: Yup.string().when('password', (password, field) =>
@@ -69,8 +69,8 @@ class UserController {
         role_id: Yup.number()
       })
 
-      if(!(await schema.isValid(req.body))){
-        return res.status(400).json({ error: 'Validation fails'})
+      if (!(await schema.isValid(req.body))) {
+        return res.status(400).json({ error: 'Validation fails' })
       }
 
       const { email, oldPassword } = req.body
@@ -90,17 +90,17 @@ class UserController {
         res.status(401).json({ error: 'Password does not match ' })
       }
 
-     await user.update(req.body)
+      await user.update(req.body)
 
-     const { name, password, role_id, avatar } = await User.findByPk(req.userId, {
-       include: [
-         {
-           model: File,
-           as: 'avatar',
-           attributes: ['id', 'path', 'url']
-         }
-       ]
-     }) 
+      const { name, password, role_id, avatar } = await User.findByPk(req.userId, {
+        include: [
+          {
+            model: File,
+            as: 'avatar',
+            attributes: ['id', 'path', 'url']
+          }
+        ]
+      })
 
       return res.json({
         name,
