@@ -90,7 +90,17 @@ class UserController {
         res.status(401).json({ error: 'Password does not match ' })
       }
 
-      const { name, password, role_id } = await user.update(req.body)
+     await user.update(req.body)
+
+     const { name, password, role_id, avatar } = await User.findByPk(req.userId, {
+       include: [
+         {
+           model: File,
+           as: 'avatar',
+           attributes: ['id', 'path', 'url']
+         }
+       ]
+     }) 
 
       return res.json({
         name,

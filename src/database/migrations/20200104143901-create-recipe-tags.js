@@ -2,13 +2,13 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('tags', { 
+    return queryInterface.createTable('tags', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-      }, 
+      },
       recipe_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -23,11 +23,11 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      created_at:{
+      created_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      updated_at:{
+      updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
       },

@@ -8,7 +8,7 @@ class File extends Model {
                 path: Sequelize.STRING,
                 url: {
                     type: Sequelize.VIRTUAL,
-                    get(){
+                    get() {
                         return `${process.env.APP_URL}/files/${this.path}`
                     }
                 }
