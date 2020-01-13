@@ -3,63 +3,58 @@ import Type from '../models/Type'
 import File from '../models/File'
 
 class RecipeController {
-    async store (req, res){
+    async store(req, res) {
         try {
-
             const { types, ...data } = req.body
             const recipeExistis = await Recipe.findOne({ where: { name: req.body.name } })
 
-            if(recipeExistis){
-                return res.status(400).json({ error: 'Recipe already exists'})
+            if (recipeExistis) {
+                return res.status(400).json({ error: 'Recipe already exists' })
             }
 
             const recipe = await Recipe.create(data)
 
-            if(types && types.length > 0){
+            if (types && types.length > 0) {
                 await recipe.setTypes(types)
             }
 
             return res.json(recipe)
-        
-        }catch (err) {
+
+        } catch (err) {
             console.log('err => ', err)
         }
     }
 
-    async index (req, res){
+    async index(req, res) {
         try {
             const recipes = await Recipe.findAll({
                 include: [
                     {
-                        model: Type,
-                        as: 'types',
-                        through: { attributes : [] },
-                    },
-                    {
                         model: File,
-                        as: 'pictures'
+                        as: 'pictures',
+                        attributes: ['url', 'id', 'path', 'name']
                     }
                 ]
             })
             return res.json(recipes)
-       
-        }catch(err){
+
+        } catch (err) {
             console.log('err => ', err)
         }
     }
 
     async update(req, res) {
-        try{
+        try {
 
-           const id = req.userId
+            const { id } = req.params
             const recipe = await Recipe.findByPk(id)
-            console.log('inside update => ', recipe)
-            if(req.body.name !== recipe.name){
+
+            if (req.body.name !== recipe.name) {
 
                 const recipeExistis = await Recipe.findOne({ where: { name: req.body.name } })
 
-                if(recipeExistis){
-                    return res.status(400).json({ error: 'Recipe already exists'})
+                if (recipeExistis) {
+                    return res.status(400).json({ error: 'Recipe already exists' })
                 }
             }
 
@@ -67,21 +62,21 @@ class RecipeController {
 
             res.json(updateRecipe)
 
-        }catch(err){
+        } catch (err) {
             console.log('err => ', err)
         }
     }
 
     async delete(req, res) {
-        try{
-           const id = req.userId
+        try {
+            const id = req.params.id
             const recipe = await Recipe.findByPk(id)
 
             const deleteRecipe = await recipe.destroy(req.body)
 
             res.json(deleteRecipe)
 
-        }catch(err){
+        } catch (err) {
             console.log('err => ', err)
         }
     }

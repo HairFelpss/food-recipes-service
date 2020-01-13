@@ -12,7 +12,6 @@ class RoleController {
             }
 
             const role = await Role.create(req.body)
-
             return res.json(role)
 
         } catch (err) {
@@ -28,11 +27,14 @@ class RoleController {
                     {
                         model: User,
                         as: 'users',
+                        attributes: ['id', 'name', 'email']
                     }
                 ]
             })
 
-            return res.json(roles)
+            const { id, name, users } = roles[0]
+            const filteredRoles = { id, name, users }
+            return res.json(filteredRoles)
 
         } catch (err) {
             console.log('err => ', err)
@@ -41,7 +43,7 @@ class RoleController {
 
     async update(req, res) {
         try {
-            const id = req.userId
+            const { id } = req.params
 
             if (req.body.name !== role.name) {
 
@@ -64,7 +66,7 @@ class RoleController {
 
     async delete(req, res) {
         try {
-            const id = req.userId
+            const { id } = req.params
             const role = await Role.findByPk(id)
 
             const deleteType = await role.destroy(req.body)

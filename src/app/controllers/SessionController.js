@@ -5,6 +5,8 @@ import authConfig from '../../config/auth'
 
 import User from '../models/User'
 import Role from '../models/Role'
+import Avatar from '../models/Avatar'
+
 
 class SessionController {
   async store(req, res) {
@@ -16,13 +18,20 @@ class SessionController {
         password: Yup.string().required(),
       })
 
-      if(!(await schema.isValid(req.body))){
-        return res.status(400).json({ error: 'Validation fails'})
+      if (!(await schema.isValid(req.body))) {
+        return res.status(400).json({ error: 'Validation fails' })
       }
 
       const { email, password } = req.body
 
-      const user = await User.findOne({ where: { email } })
+      const user = await User.findOne({
+        where: { email },
+        include: [{
+          model: Avatar,
+          as: 'avatar',
+          attributes: ['id', 'path', 'url'],
+        }]
+      })
       if (!user) {
         return res.status(401).json({ error: 'User not found' })
       }
@@ -31,7 +40,7 @@ class SessionController {
         return res.status(401).json({ error: 'Password does not match ' })
       }
 
-      const { id, name, role_id } = user
+      const { id, name, role_id, avatar } = user
       const role = role_id ? await Role.findOne({ where: { id: role_id } }) : null
       const role_name = role ? role.name : 'user'
 
@@ -41,7 +50,8 @@ class SessionController {
           name,
           email,
           role_name,
-          role_id
+          role_id,
+          avatar
         },
         token: jwt.sign({ id, role_name }, authConfig.secret, {
           expiresIn: authConfig.expiresIn,
