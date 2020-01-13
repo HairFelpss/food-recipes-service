@@ -1,5 +1,6 @@
 import Type from '../models/Type'
 import Recipe from '../models/Recipe'
+import File from '../models/File'
 
 class TypeController {
     async store(req, res) {
@@ -29,31 +30,17 @@ class TypeController {
         try {
 
             const types = await Type.findAll({
+                attributes: ['id', 'name', 'photo_id'],
                 include: [
                     {
-                        model: Recipe,
-                        as: 'recipes',
-                        through: {
-                            attributes: [
-                                'id',
-                                'name',
-                                'introduction',
-                                'steps',
-                                'ingredients',
-                                'preparation_time',
-                                'qt_yield',
-                                'difficulty',
-                                'types',
-                                'pictures',
-                                'tags',
-                            ]
-                        },
+                        model: File,
+                        as: 'pictures',
+                        attributes: ['url', 'id', 'path']
                     }
                 ]
             })
 
-            const { id, name, recipes } = types[0]
-            return res.json({ id, name, recipes })
+            return res.json(types)
 
         } catch (err) {
             console.log('err => ', err)
@@ -63,7 +50,7 @@ class TypeController {
     async update(req, res) {
         try {
 
-            const id = req.userId
+            const { id } = req.params
             const type = await Type.findByPk(id)
 
             if (req.body.name !== type.name) {
@@ -86,7 +73,7 @@ class TypeController {
 
     async delete(req, res) {
         try {
-            const id = req.params.id
+            const { id } = req.params
             const type = await Type.findByPk(id)
 
             const deleteType = await type.destroy(req.body)

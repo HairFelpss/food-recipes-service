@@ -28,7 +28,7 @@ class AvatarController {
 
   async update(req, res) {
     try {
-      const id = req.userId
+      const { id } = req.params
       const avatar = await Avatar.findByPk(id)
 
       const { originalname: name, filename: path } = req.file

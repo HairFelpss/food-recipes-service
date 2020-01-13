@@ -43,7 +43,7 @@ class RoleController {
 
     async update(req, res) {
         try {
-            const id = req.userId
+            const { id } = req.params
 
             if (req.body.name !== role.name) {
 
@@ -66,7 +66,7 @@ class RoleController {
 
     async delete(req, res) {
         try {
-            const id = req.userId
+            const { id } = req.params
             const role = await Role.findByPk(id)
 
             const deleteType = await role.destroy(req.body)

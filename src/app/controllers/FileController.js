@@ -19,9 +19,10 @@ class FileController {
 
     async index(req, res) {
         try {
-            const files = await File.findAll()
-            const { id, url } = files[0]
-            return res.json({ id, url })
+            const files = await File.findAll({
+                attributes: ['id', 'path', 'url', 'name']
+            })
+            return res.json(files)
 
         } catch (err) {
             console.log('err => ', err)
@@ -30,7 +31,7 @@ class FileController {
 
     async update(req, res) {
         try {
-            const id = req.userId
+            const { id } = req.params
             const file = await File.findByPk(id)
 
             const { originalname: name, filename: path } = req.file
@@ -58,7 +59,7 @@ class FileController {
 
     async delete(req, res) {
         try {
-            const id = req.userId
+            const { id } = req.params
             const file = await File.findByPk(id)
 
             const deleteFile = await file.destroy(req.body)
