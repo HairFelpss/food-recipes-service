@@ -5,7 +5,7 @@ import authConfig from '../../config/auth'
 
 import User from '../models/User'
 import Role from '../models/Role'
-import Avatar from '../models/Avatar'
+import File from '../models/File'
 
 
 class SessionController {
@@ -27,7 +27,7 @@ class SessionController {
       const user = await User.findOne({
         where: { email },
         include: [{
-          model: Avatar,
+          model: File,
           as: 'avatar',
           attributes: ['id', 'path', 'url'],
         }]

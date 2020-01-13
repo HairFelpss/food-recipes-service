@@ -18,7 +18,7 @@ class AppController {
     Sentry.init(sentryConfig)
 
 
-    this.middlewares() 
+    this.middlewares()
     this.routes()
   }
 
@@ -30,10 +30,6 @@ class AppController {
       '/files',
       express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
     )
-    this.server.use(
-      '/avatars',
-      express.static(path.resolve(__dirname, '..', 'tmp', 'uploads'))
-    )
   }
 
   routes() {
@@ -43,13 +39,13 @@ class AppController {
 
   exceptionHandler() {
     this.server.use(async (err, req, res, next) => {
-      if(process.env.NODE_ENV === 'development') {
+      if (process.env.NODE_ENV === 'development') {
         const errors = await new Youch(err, req).toJSON()
 
         return res.status(500).json(errors)
       }
 
-      return res.status(500).json({ error: 'Internal server error'})
+      return res.status(500).json({ error: 'Internal server error' })
     })
   }
 }
