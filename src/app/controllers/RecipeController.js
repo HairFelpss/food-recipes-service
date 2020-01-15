@@ -6,6 +6,7 @@ class RecipeController {
     async store(req, res) {
         try {
             const { types, ...data } = req.body
+            console.log('types =>> ', types)
             const recipeExistis = await Recipe.findOne({ where: { name: req.body.name } })
 
             if (recipeExistis) {
@@ -27,15 +28,45 @@ class RecipeController {
 
     async index(req, res) {
         try {
-            const recipes = await Recipe.findAll({
-                include: [
-                    {
-                        model: File,
-                        as: 'pictures',
-                        attributes: ['url', 'id', 'path', 'name']
-                    }
-                ]
-            })
+            const recipes = await Recipe.findAll(
+                {
+                    attributes: ['id', 'name', 'introduction', 'steps', 'ingredients', 'preparation_time', 'qt_yield', 'difficulty'],
+                    include: [
+                        {
+                            model: File,
+                            as: 'pictures',
+                            attributes: ['url', 'id', 'path', 'name']
+                        }
+                    ]
+                })
+            return res.json(recipes)
+
+        } catch (err) {
+            console.log('err => ', err)
+        }
+    }
+
+    async indexJustOne(req, res) {
+        try {
+            const { id } = req.params
+            const recipes = await Recipe.findByPk(id,
+                {
+                    attributes: ['id', 'name', 'introduction', 'steps', 'ingredients', 'preparation_time', 'qt_yield', 'difficulty'],
+                    include: [
+                        {
+                            model: File,
+                            as: 'pictures',
+                            attributes: ['url', 'id', 'path', 'name']
+                        }
+                    ],
+                    include: [
+                        {
+                            model: Type,
+                            as: 'types',
+                            through: { attributes: ['id'] }
+                        }
+                    ]
+                })
             return res.json(recipes)
 
         } catch (err) {
