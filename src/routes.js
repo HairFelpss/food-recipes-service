@@ -30,6 +30,7 @@ routes.delete('/roles/:id', RoleController.delete)
 
 routes.post('/recipes', RecipeController.store)
 routes.get('/recipes', RecipeController.index)
+routes.get('/recipes/:id', RecipeController.indexJustOne)
 routes.put('/recipes/:id', RecipeController.update)
 routes.delete('/recipes/:id', RecipeController.delete)
 
