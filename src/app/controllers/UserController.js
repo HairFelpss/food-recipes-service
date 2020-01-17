@@ -118,10 +118,12 @@ class UserController {
     try {
       const { id } = req.params
       const user = await User.findByPk(id)
-
+      const { avatar_id } = user
+      const file = await File.findByPk(avatar_id)
       const deleteUser = await user.destroy(req.body)
+      const deleteFile = await file.destroy(req.body)
 
-      res.json(deleteUser)
+      res.json({ deleteUser, deleteFile })
 
     } catch (err) {
       console.log('err => ', err)
