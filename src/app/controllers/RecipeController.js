@@ -102,10 +102,11 @@ class RecipeController {
         try {
             const id = req.params.id
             const recipe = await Recipe.findByPk(id)
-
+            const { photo_id } = recipe
+            const file = await File.findByPk(photo_id)
             const deleteRecipe = await recipe.destroy(req.body)
-
-            res.json(deleteRecipe)
+            const deleteFile = await file.destroy(req.body)
+            res.json({ deleteRecipe, deleteFile })
 
         } catch (err) {
             console.log('err => ', err)
