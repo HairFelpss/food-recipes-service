@@ -21,7 +21,7 @@ routes.use(authMiddleware)
 
 routes.get('/users', UserController.index)
 routes.put('/users', UserController.update)
-routes.delete('/users', UserController.delete)
+routes.delete('/users/:id', UserController.delete)
 
 routes.post('/roles', RoleController.store)
 routes.get('/roles', RoleController.index)

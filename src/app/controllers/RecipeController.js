@@ -5,6 +5,7 @@ import File from '../models/File'
 class RecipeController {
     async store(req, res) {
         try {
+            req.setTimeout(0)
             const { types, ...data } = req.body
             console.log('types =>> ', types)
             const recipeExistis = await Recipe.findOne({ where: { name: req.body.name } })

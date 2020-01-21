@@ -10,7 +10,7 @@ module.exports = {
         primaryKey: true,
       },
       name: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(50),
         allowNull: false,
         unique: true,
       },
@@ -19,21 +19,21 @@ module.exports = {
         allowNull: false,
       },
       steps: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1000),
         allowNull: false,
       },
       ingredients: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(1000),
         allowNull: false,
       },
       preparation_time: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(20),
       },
       qt_yield: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(20),
       },
       difficulty: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(10),
       },
       created_at: {
         type: Sequelize.DATE,
