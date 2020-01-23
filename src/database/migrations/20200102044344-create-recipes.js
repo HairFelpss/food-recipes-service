@@ -15,15 +15,15 @@ module.exports = {
         unique: true,
       },
       introduction: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(300),
         allowNull: false,
       },
       steps: {
-        type: Sequelize.STRING(1000),
+        type: Sequelize.STRING(5000),
         allowNull: false,
       },
       ingredients: {
-        type: Sequelize.STRING(1000),
+        type: Sequelize.STRING(5000),
         allowNull: false,
       },
       preparation_time: {
