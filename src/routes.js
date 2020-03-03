@@ -16,11 +16,11 @@ const upload = multer(multerConfig);
 
 routes.post("/users", UserController.store);
 routes.post("/sessions", SessionController.store);
+
+routes.use(authMiddleware);
 routes.get("/recipes", RecipeController.index);
 routes.get("/recipes/:id", RecipeController.indexJustOne);
 routes.get("/types", TypeController.index);
-
-routes.use(authMiddleware);
 
 routes.get("/users", UserController.index);
 routes.put("/users/", UserController.update);
